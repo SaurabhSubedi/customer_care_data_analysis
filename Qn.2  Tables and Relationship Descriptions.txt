@@ -1,0 +1,77 @@
+
+
+NOTE: It seems like `calls` is the fact table whereas all other tables are dimension tables.
+
+
+**Tables:**
+1. **queues**
+ - `id` (bigint(20) unsigned) - Primary Key, auto_increment
+ - `service_id` (bigint(20) unsigned) - Foreign Key referencing `services(id)`
+ - `number` (int(11)) - Queue number
+ - `called` (tinyint(1)) - Indicator if the queue has been called
+ - `reference_no` (varchar(191)) - Reference number for the queue
+ - `letter` (varchar(191)) - Letter associated with the queue
+ - `name` (varchar(191)) - Name of the person in the queue
+ - `email` (varchar(191)) - Email of the person in the queue
+ - `phone` (varchar(191)) - Phone number of the person in the queue
+ - `position` (int(11)) - Position in the queue
+ - `created_at` (timestamp) - Timestamp when the queue was created
+ - `updated_at` (timestamp) - Timestamp when the queue was last updated
+
+
+2. **users**
+- `id` (integer) - PRIMARY KEY, AUTOINCREMENT
+-  `name` (varchar(191)) - Full Name of the user
+-  `email` (varchar(191)) - Company Email of the user
+-  `email_verified_at` (timestamp) - Timestamp when the email of the user was verified
+-  `password` (varchar(191)) - Hashed Password Credential of the user
+-  `remember_token` (varchar(100)) - Token used to remember the user for login sessions
+-  `created_at` (timestamp) -Timestamp when the user  was created
+-  `updated_at` (timestamp) - Timestamp when the user record was updated
+-  `image` (varchar(191)) - path to the profile image of the user
+
+
+3. **call statuses**
+ - `id` (integer)  - PRIMARY KEY, AUTOINCREMENT
+ - `name` (varchar(191)) -  Name of the status of the call (whether served or notshowing)
+ - `created_at` (timestamp) - Timestamp when the call status was created
+ - `updated_at` (timestamp) - Timestamp when the call status  was last updated
+
+
+4. **calls**
+ - `id` (bigint(20) unsigned) - PRIMARY KEY AUTOINCREMENT
+ - `queue_id` (bigint(20) unsigned) - Foreign Key referencing `queues(id)`
+ -  `service_id` (integer)  - Foreign Key referencing `services(id)`
+ -  `counter_id` integer  - Foreign Key referencing `counters(id)`
+ -  `user_id` (integer)  - Foreign Key referencing `users(id)`
+ -  `token_letter` (varchar(191)) - Abbreviated form of name of the type of service
+ - `token_number` (integer) - Number assigned to the token for the service
+ -  `called_date` (date) -  Date when the call was made
+ - `started_at` (datetime) - Timestamp when the service call started
+ - `ended_at` (datetime) - Timestamp when the service call ended
+ - `waiting_time` (time) -  Duration between the token was issued  and the service call started
+ - `served_time` (time) -  Duration of the service provided
+ -  `turn_around_time` (time) - Total time from token was issued to the completion of the service
+ -  `created_at` timestamp - Timestamp when the call  was created
+ - `updated_at` timestamp - Timestamp when the call  was last updated
+ - `call_status_id` (integer) - Foreign Key referencing `call_statuses(id)`
+
+
+
+5. **counters**
+ - `id` (integer) - PRIMARY KEY AUTOINCREMENT
+ - `name` varchar(191) - Name of the counter
+ -  `status` (integer) - Current status of the counter (active or inactive)
+ -  `created_at` (timestamp) - Timestamp when the counter record was created
+ -  `updated_at` (timestamp) - Timestamp when the counter record was last updated
+
+
+
+**Relationships:**
+- **calls & queues:** Linked by `queue_id` in the `calls` table referencing `queues(id)`.
+- **calls & services:** Linked by `service_id` in the `calls` table referencing `services(id)`.
+- **calls & counters:** Linked by `counter_id` in the `calls` table referencing `counters(id)`.
+- **calls & users:** Linked by `user_id` in the `calls` table referencing `users(id)`.
+- **calls & call_statuses:** Linked by `call_status_id` in the `calls` table referencing `call_statuses(id)`.
+- **queues & services:** Linked by `service_id` in the `queues` table referencing `services(id)`.
+
